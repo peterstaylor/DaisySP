@@ -45,8 +45,9 @@ class Looper
 
         InitBuff();
         state_      = State::EMPTY;
-        mode_       = Mode::NORMAL;
+        mode_       = Mode::FRIPPERTRONICS;
         half_speed_ = false;
+        decayVal_   = 0.95f; 
         reverse_    = false;
         rec_queue_  = false;
         win_idx_    = 0;
@@ -119,7 +120,7 @@ class Looper
                 {
                     case Mode::REPLACE: Write(pos_, input * win_); break;
                     case Mode::FRIPPERTRONICS:
-                        Write(pos_, (input * win_) + (sig * kFripDecayVal));
+                        Write(pos_, (input * win_) + (sig * decayVal_));
                         break;
                     case Mode::NORMAL:
                     case Mode::ONETIME_DUB:
@@ -221,6 +222,8 @@ class Looper
 
     inline bool IsNearBeginning() { return near_beginning_; }
 
+    inline void SetDecayVal(float decayVal) {decayVal_ = decayVal;}
+
   private:
     /** Constants */
 
@@ -278,6 +281,7 @@ class Looper
     Mode   mode_;
     State  state_;
     float *buff_;
+    float  decayVal_; 
     size_t buffer_size_;
     float  pos_, win_;
     size_t win_idx_;
