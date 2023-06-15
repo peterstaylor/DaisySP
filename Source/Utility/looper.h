@@ -224,6 +224,15 @@ class Looper
 
     inline void SetDecayVal(float decayVal) {decayVal_ = decayVal;}
 
+    inline int GetRecSize() {
+        if (state_ != State::EMPTY){
+            return recsize_; 
+        }
+        else {
+            return 0; 
+        }
+    }
+
   private:
     /** Constants */
 
