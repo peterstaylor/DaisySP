@@ -52,6 +52,7 @@ class Looper
         rec_queue_  = false;
         win_idx_    = 0;
         inc_mult_   = 1; 
+        rec_size_offset_ = 0; 
     }
 
     /** Handles reading/writing to the Buffer depending on the mode. */
@@ -94,14 +95,14 @@ class Looper
                 }
 
                 pos_ += inc;
-                if(pos_ > recsize_ - 1)
+                if(pos_ > recsize_ - 1 - rec_size_offset_)
                 {
                     pos_    = 0;
                     hitloop = true;
                 }
                 else if(pos_ < 0)
                 {
-                    pos_    = recsize_ - 1;
+                    pos_    = recsize_ - 1 - rec_size_offset_;
                     hitloop = true;
                 }
                 if(hitloop)
@@ -130,14 +131,14 @@ class Looper
                 if(win_idx_ < kWindowSamps - 1)
                     win_idx_ += 1;
                 pos_ += inc;
-                if(pos_ > recsize_ - 1)
+                if(pos_ > recsize_ - 1 - rec_size_offset_)
                 {
                     pos_    = 0;
                     hitloop = true;
                 }
                 else if(pos_ < 0)
                 {
-                    pos_    = recsize_ - 1;
+                    pos_    = recsize_ - 1 - rec_size_offset_;
                     hitloop = true;
                 }
                 if(hitloop && mode_ == Mode::ONETIME_DUB)
@@ -225,7 +226,7 @@ class Looper
 
     inline void SetDecayVal(float decayVal) {decayVal_ = decayVal;}
 
-    inline int GetRecSize() {
+    inline size_t GetRecSize() {
         if (state_ != State::EMPTY){
             return recsize_; 
         }
@@ -235,6 +236,12 @@ class Looper
     }
 
     inline void SetIncMult(float inc_mult) {inc_mult_ = inc_mult;}
+
+    inline void SetRecOffset(size_t rec_size_offset) {rec_size_offset_ = rec_size_offset;}
+
+    inline void SetPos(float pos){pos_ = pos;}
+
+    inline void ResetPos(){pos_ = 0;}
 
   private:
     /** Constants */
@@ -304,6 +311,7 @@ class Looper
     bool   rec_queue_;
     bool   near_beginning_;
     float  inc_mult_; 
+    size_t  rec_size_offset_; 
 };
 
 } // namespace daisysp
