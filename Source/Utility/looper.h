@@ -51,6 +51,7 @@ class Looper
         reverse_    = false;
         rec_queue_  = false;
         win_idx_    = 0;
+        inc_mult_   = 1; 
     }
 
     /** Handles reading/writing to the Buffer depending on the mode. */
@@ -233,6 +234,8 @@ class Looper
         }
     }
 
+    inline void SetIncMult(float inc_mult) {inc_mult_ = inc_mult;}
+
   private:
     /** Constants */
 
@@ -249,6 +252,7 @@ class Looper
         float inc = 1.f;
         if(half_speed_)
             inc = 0.5f;
+        inc = inc * inc_mult_; 
         return reverse_ ? -inc : inc;
     }
 
@@ -299,6 +303,7 @@ class Looper
     size_t recsize_;
     bool   rec_queue_;
     bool   near_beginning_;
+    float  inc_mult_; 
 };
 
 } // namespace daisysp
