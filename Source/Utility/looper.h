@@ -241,7 +241,7 @@ class Looper
 
     inline void SetPos(float pos){pos_ = pos;}
 
-    inline float GetPos(){return pos_}
+    inline float GetPos(){return pos_;}
 
     inline void ResetPos(){pos_ = 0;}
 
